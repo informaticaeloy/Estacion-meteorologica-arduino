@@ -10,10 +10,18 @@
 <title>Demo Arduino Ethernet</title>
 
 <style type="text/css">
-td
-{
-font: small-caps 900 50px consolas
-}
+td{font: small-caps 900 50px consolas}
+
+td.a {background-color: #243ff0;}
+td.b {background-color: #1726cf;}
+td.c {background-color: #100085;}
+
+font.mini {font: consolas; font-size: 0.4em; color: #FFFFFF;}
+font.pequena {font: consolas; font-size: 0.7em; color: #FFFFFF;}
+font.mediana {font: consolas; font-size: 1em; color: #FFFFFF;}
+font.grande {font: consolas; font-size: 2em; color: #FFFFFF;}
+
+span.superbig {font: consolas; font-size: 4em}
 </style>
 
 
@@ -21,50 +29,104 @@ font: small-caps 900 50px consolas
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <script type="text/javascript">
+//function actualizar(){location.reload(true);}
+setInterval("cargarDatos()",5000);
+</script>
+
+
+<script type="text/javascript">
+function msToTime(duration) {
+	var milliseconds = parseInt((duration % 1000) / 100),
+	seconds = parseInt((duration / 1000) % 60),
+	minutes = parseInt((duration / (1000 * 60)) % 60),
+	hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+	hours = (hours < 10) ? "0" + hours : hours;
+	minutes = (minutes < 10) ? "0" + minutes : minutes;
+	seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+	return hours + "h:" + minutes + "m:" + seconds + "s";
+}
+
 function cargarDatos()
 {
 	// En la linea siguiente cambia la IP por la que esté usando tu arduino
-	$.getJSON("http://192.168.1.20").done( function(datos)
-	{
+	var json = $.getJSON("http://192.168.1.200");
+	$.when(json).then(function(datos){
 		$("#tempVal").text(datos.Temperatura);
+		var myCO2 = datos.CO2;
+		//alert(myCO2);
 		$("#humeVal").text(datos.Humedad);
 		$("#presVal").text(datos.Presion);
 		$("#CO2Val").text(datos.CO2);
 		$("#VOCVal").text(datos.VOC);
-		$("#uptimeVal").text(datos.uptime);
-		alert("A");
+                var myUptime = datos.uptime;
+		myUptime = msToTime(myUptime);
+		$("#uptimeVal").text(myUptime);
+		var objetivo = document.getElementById('texto_nav1');
+		if (myCO2 < 501)
+		{
+			objetivo.innerHTML = "Ambiente muy bueno, recomendado";
+		}
+		else if (myCO2 < 1001)
+		{
+			objetivo.innerHTML = "Ambiente Bueno";
+		}
+		else if (myCO2 < 1501)
+		{
+			objetivo.innerHTML = "Ambiente Malo, ventilar";
+		}
+		else if (myCO2 < 2001)
+		{
+			objetivo.innerHTML = "Ambiente Muy Malo, VENTILAR !!!";
+		}
+		else
+		{
+			objetivo.innerHTML = "Ambiente Peligroso, DESALOJAR !!!";
+		}
 	});
 }
+
+
 </script>
 
-</head><body onLoad="cargarDatos();">
+</head><body onLoad="cargarDatos();" style="background-color:#1C1D3B;">
+</body>
 <div>
-<table align="center" border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 	<tbody>
 		<tr>
-			<td colspan="3" rowspan="1" align="center" style="width: 50%;">CO2</td>
-			<td colspan="3" rowspan="1" align="center" style="width: 50%;">VOC</td>
+			<td colspan="3" rowspan="1" align="center" style="width: 50%;"><font class="grande">CO2</font><font class="pequena">(ppm)</font></td>
+			<td colspan="3" rowspan="1" align="center" style="width: 50%;"><font class="grande">VOC</font><font class="pequena">(ppb)</font></td>
 		</tr>
 		<tr>
-			<td colspan="3" rowspan="1" align="center"><span id="CO2Val"></span>ppm</td>
-			<td colspan="3" rowspan="1" align="center"><span id="VOCVal"></span>ppb</td>
+			<td colspan="3" rowspan="1" align="center" class="a"><span class="superbig" id="CO2Val"></span></td>
+			<td colspan="3" rowspan="1" align="center" class="b"><span class="superbig" id="VOCVal"></span></td>
 		</tr>
 		<tr>
-			<td colspan="3" rowspan="1"><span id="texto_nav1"></span></td>
-			<td colspan="3" rowspan="1">&nbsp;</td>
+			<td colspan="3" rowspan="1" align="center"><span id="texto_nav1"></span></td>
+			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan="2" rowspan="1" align="center" style="width: 33%;">Temperatura</td>
-			<td colspan="2" rowspan="1" align="center" style="width: 33%;">Humedad</td>
-			<td colspan="2" rowspan="1" align="center" style="width: 33%;">Presi&oacute;n</td>
+			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
+			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan="2" rowspan="1" align="center"><span id="tempVal"></span>ºC</td>
-			<td colspan="2" rowspan="1" align="center"><span id="humeVal"></span>%</td>
-			<td colspan="2" rowspan="1" align="center"><span id="presVal"></span>hPa</td>
+			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
+			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan="6" align="center">Dpto. IT - Sensor ambiental - Uptime:<span id="uptimeVal"></span>ms</td>
+			<td colspan="2" rowspan="1" align="center" style="width: 33%;"><font class="pequena">&#127777; Temperatura</font></td>
+			<td colspan="2" rowspan="1" align="center" style="width: 33%;"><font class="pequena">&#127778; Humedad</font></td>
+			<td colspan="2" rowspan="1" align="center" style="width: 33%;"><font class="pequena">&#9729; Presi&oacute;n</font></td>
+		</tr>
+		<tr>
+			<td colspan="2" rowspan="1" align="center"><span id="tempVal"></span><font class="pequena">&#176;C</font></td>
+			<td colspan="2" rowspan="1" align="center"><span id="humeVal"></span><font class="pequena">%</font></td>
+			<td colspan="2" rowspan="1" align="center"><span id="presVal"></span><font class="pequena">hPa</font></td>
+		</tr>
+		<tr>
+			<td colspan="6" align="center"><font class="mini">Dpto. IT - Sensor ambiental - Uptime:</font><span class="mini" id="uptimeVal"></span></td>
 		</tr>
 	</tbody>
 </table>
