@@ -21,46 +21,18 @@ font: small-caps 900 50px consolas
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-//function actualizar(){location.reload(true);}
-setInterval("cargarDatos()",1000);
-</script>
-
-
-<script type="text/javascript">
 function cargarDatos()
 {
 	// En la linea siguiente cambia la IP por la que esté usando tu arduino
-	var json = $.getJSON("http://192.168.1.20");
-	$.when(json).then(function(datos){
+	$.getJSON("http://192.168.1.20").done( function(datos)
+	{
 		$("#tempVal").text(datos.Temperatura);
-		var myCO2 = datos.CO2;
-		//alert(myCO2);
 		$("#humeVal").text(datos.Humedad);
 		$("#presVal").text(datos.Presion);
 		$("#CO2Val").text(datos.CO2);
 		$("#VOCVal").text(datos.VOC);
 		$("#uptimeVal").text(datos.uptime);
-		var objetivo = document.getElementById('texto_nav1');
-		if (myCO2 < 501)
-		{
-			objetivo.innerHTML = "Ambiente muy bueno, recomendado";
-		}
-		else if (myCO2 < 1001)
-		{
-			objetivo.innerHTML = "Ambiente Bueno";
-		}
-		else if (myCO2 < 1501)
-		{
-			objetivo.innerHTML = "Ambiente Malo, ventilar";
-		}
-		else if (myCO2 < 2001)
-		{
-			objetivo.innerHTML = "Ambiente Muy Malo, VENTILAR !!!";
-		}
-		else
-		{
-			objetivo.innerHTML = "Ambiente Peligroso, DESALOJAR !!!";
-		}
+		alert("A");
 	});
 }
 </script>
@@ -87,7 +59,7 @@ function cargarDatos()
 			<td colspan="2" rowspan="1" align="center" style="width: 33%;">Presi&oacute;n</td>
 		</tr>
 		<tr>
-			<td colspan="2" rowspan="1" align="center"><span id="tempVal"></span>&#176;C</td>
+			<td colspan="2" rowspan="1" align="center"><span id="tempVal"></span>ºC</td>
 			<td colspan="2" rowspan="1" align="center"><span id="humeVal"></span>%</td>
 			<td colspan="2" rowspan="1" align="center"><span id="presVal"></span>hPa</td>
 		</tr>
