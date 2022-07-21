@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="cache-control" content="max-age=0" />
@@ -16,12 +16,29 @@ td.a {background-color: #243ff0;}
 td.b {background-color: #1726cf;}
 td.c {background-color: #100085;}
 
+td.verdeok {background-color: #39BD74; height: 10px}
+td.verde {background-color: #12EE74;  height: 10px}
+td.amarillo {background-color: #FCF207; height: 10px}
+td.rojo {background-color: #FF0000; height: 10px}
+td.rojowarning {background-color: #ED2A38; height: 10px}
+
+tr.celdavacia {height: 10px}
+td.celdavacia {height: 10px}
+
+font.simbolos { font: consolas; font-size: 0.7em; color: #14C2C3;}
 font.mini {font: consolas; font-size: 0.4em; color: #FFFFFF;}
 font.pequena {font: consolas; font-size: 0.7em; color: #FFFFFF;}
 font.mediana {font: consolas; font-size: 1em; color: #FFFFFF;}
 font.grande {font: consolas; font-size: 2em; color: #FFFFFF;}
 
-span.superbig {font: consolas; font-size: 4em}
+span.superbig {font: consolas; font-size: 4em; color: #FFFFFF;}
+span.mini {font: consolas; font-size: 0.4em; color: #FFFFFF;}
+span.recomendaciones {font: consolas; font-size: 0.8em; color: #FFFFFF;}
+span.marcablanca {font: consolas; font-size: 1em; color: #FFFFFF;}
+span.marcaoculta {font: consolas; font-size: 1em; color: #1C1D3B;}
+
+span.mini {font: consolas; font-size: 0.4em; color: #FFFFFF; }
+span.pequena {font: consolas; font-size: 0.7em; color: #FFFFFF; }
 </style>
 
 
@@ -52,9 +69,26 @@ function cargarDatos()
 {
 	// En la linea siguiente cambia la IP por la que esté usando tu arduino
 	var json = $.getJSON("http://192.168.1.200");
+
+
+
+
 	$.when(json).then(function(datos){
 		$("#tempVal").text(datos.Temperatura);
+		var ntempVal = datos.Temperatura;
+//var mientero = intval(ntempVal);
+//var midecimal = round((abs(ntempVal) - abs(mientero)) * 100, 2);
+
+
+		//var stempVal = ntempVal.toString();
+		//var ntempVal = Math.trunc(ntempVal);
+		//var stempVal = ntempVal.toString();
+		//ntempDec = stempVal.split(".");
+		$("#tempVal").text(ntempVal);
+		//$("#tempDec").text(decimal);
+
 		var myCO2 = datos.CO2;
+		var myVOC = datos.VOC;
 		//alert(myCO2);
 		$("#humeVal").text(datos.Humedad);
 		$("#presVal").text(datos.Presion);
@@ -63,26 +97,110 @@ function cargarDatos()
                 var myUptime = datos.uptime;
 		myUptime = msToTime(myUptime);
 		$("#uptimeVal").text(myUptime);
-		var objetivo = document.getElementById('texto_nav1');
+		var objetivo1 = document.getElementById('texto_nav1');
+		
+
+		var efe01 = document.getElementById('f01');
+		var efe02 = document.getElementById('f02');
+		var efe03 = document.getElementById('f03');
+		var efe04 = document.getElementById('f04');
+		var efe05 = document.getElementById('f05');
+
+		efe01.classList.remove("marcablanca");
+		efe02.classList.remove("marcablanca");
+		efe03.classList.remove("marcablanca");
+		efe04.classList.remove("marcablanca");
+		efe05.classList.remove("marcablanca");
+
+		efe01.classList.add("marcaoculta");
+		efe02.classList.add("marcaoculta");
+		efe03.classList.add("marcaoculta");
+		efe04.classList.add("marcaoculta");
+		efe05.classList.add("marcaoculta");
+
+		var efe06 = document.getElementById('f06');
+		var efe07 = document.getElementById('f07');
+		var efe08 = document.getElementById('f08');
+		var efe09 = document.getElementById('f09');
+		var efe10 = document.getElementById('f10');
+
+		efe06.classList.remove("marcablanca");
+		efe07.classList.remove("marcablanca");
+		efe08.classList.remove("marcablanca");
+		efe09.classList.remove("marcablanca");
+		efe10.classList.remove("marcablanca");
+
+		efe06.classList.add("marcaoculta");
+		efe07.classList.add("marcaoculta");
+		efe08.classList.add("marcaoculta");
+		efe09.classList.add("marcaoculta");
+		efe10.classList.add("marcaoculta");
+
 		if (myCO2 < 501)
 		{
-			objetivo.innerHTML = "Ambiente muy bueno, recomendado";
+			efe01.classList.remove("marcaoculta");
+			efe01.classList.add("marcablanca");
+			objetivo1.innerHTML = "Ambiente muy bueno, recomendado";
 		}
 		else if (myCO2 < 1001)
 		{
-			objetivo.innerHTML = "Ambiente Bueno";
+			efe02.classList.remove("marcaoculta");
+			efe02.classList.add("marcablanca");
+			objetivo1.innerHTML = "Ambiente Bueno";
 		}
 		else if (myCO2 < 1501)
 		{
-			objetivo.innerHTML = "Ambiente Malo, ventilar";
+			efe03.classList.remove("marcaoculta");
+			efe03.classList.add("marcablanca");
+			objetivo1.innerHTML = "Ambiente Malo, ventilar";
 		}
 		else if (myCO2 < 2001)
 		{
-			objetivo.innerHTML = "Ambiente Muy Malo, VENTILAR !!!";
+			efe04.classList.remove("marcaoculta");
+			efe04.classList.add("marcablanca");
+			objetivo1.innerHTML = "Ambiente Muy Malo, VENTILAR !!!";
 		}
 		else
 		{
-			objetivo.innerHTML = "Ambiente Peligroso, DESALOJAR !!!";
+			efe05.classList.remove("marcaoculta");
+			efe05.classList.add("marcablanca");
+			objetivo1.innerHTML = "Ambiente Peligroso, DESALOJAR !!!";
+		}
+		
+
+		
+		var objetivo2 = document.getElementById('texto_nav2');
+
+
+		if (myVOC < 201)
+		{
+			efe06.classList.remove("marcaoculta");
+			efe06.classList.add("marcablanca");
+			objetivo2.innerHTML = "Ambiente muy bueno, recomendado";
+		}
+		else if (myVOC < 601)
+		{			
+			efe07.classList.remove("marcaoculta");
+			efe07.classList.add("marcablanca");
+			objetivo2.innerHTML = "Ambiente Bueno";
+		}
+		else if (myVOC < 1001)
+		{
+			efe08.classList.remove("marcaoculta");
+			efe08.classList.add("marcablanca");
+			objetivo2.innerHTML = "Ambiente Malo, ventilar";
+		}
+		else if (myVOC < 2001)
+		{
+			efe09.classList.remove("marcaoculta");
+			efe09.classList.add("marcablanca");
+			objetivo2.innerHTML = "Ambiente Muy Malo, VENTILAR !!!";
+		}
+		else
+		{
+			efe10.classList.remove("marcaoculta");
+			efe10.classList.add("marcablanca");
+			objetivo2.innerHTML = "Ambiente Peligroso, DESALOJAR !!!";
 		}
 	});
 }
@@ -93,40 +211,72 @@ function cargarDatos()
 </head><body onLoad="cargarDatos();" style="background-color:#1C1D3B;">
 </body>
 <div>
-<table align="center" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 	<tbody>
 		<tr>
-			<td colspan="3" rowspan="1" align="center" style="width: 50%;"><font class="grande">CO2</font><font class="pequena">(ppm)</font></td>
-			<td colspan="3" rowspan="1" align="center" style="width: 50%;"><font class="grande">VOC</font><font class="pequena">(ppb)</font></td>
+			<td colspan="7" rowspan="1" align="center"><font class="grande">CO2</font><font class="pequena">(ppm)</font></td>
+			<td colspan="7" rowspan="1" align="center"><font class="grande">VOC</font><font class="pequena">(ppb)</td>
 		</tr>
 		<tr>
-			<td colspan="3" rowspan="1" align="center" class="a"><span class="superbig" id="CO2Val"></span></td>
-			<td colspan="3" rowspan="1" align="center" class="b"><span class="superbig" id="VOCVal"></span></td>
+			<td colspan="7" rowspan="1" align="center" class="a"><span class="superbig" id="CO2Val"></span></td>
+			<td colspan="7" rowspan="1" align="center" class="b"><span class="superbig" id="VOCVal"></span></td>
 		</tr>
 		<tr>
-			<td colspan="3" rowspan="1" align="center"><span id="texto_nav1"></span></td>
-			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
+			<td colspan="7" rowspan="1" align="center"><span id="texto_nav1" class="recomendaciones"></span></td>
+			<td colspan="7" rowspan="1" align="center"><span id="texto_nav2" class="recomendaciones"></span></td>
 		</tr>
 		<tr>
-			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
-			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
+			<td align="center"><span class="marcablanca">&nbsp;</td>
+			<td align="center"><span class="marcablanca" id="f01">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f02">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f03">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f04">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f05">&#9660;</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td align="center"><span class="marcablanca" id="f06">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f07">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f08">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f09">&#9660;</span></td>
+			<td align="center"><span class="marcablanca" id="f10">&#9660;</span></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr class="celdavacia">
+			<td class="celdavacia"></td>
+			<td class="verdeok"></td>
+			<td class="verde"></td>
+			<td class="amarillo"></td>
+			<td class="rojo"></td>
+			<td class="rojowarning"></td>
+			<td class="celdavacia"></td>
+			<td class="celdavacia"></td>
+			<td class="verdeok"></td>
+			<td class="verde"></td>
+			<td class="amarillo"></td>
+			<td class="rojo"></td>
+			<td class="rojowarning"></td>
+			<td class="celdavacia"></td>
+
 		</tr>
 		<tr>
-			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
-			<td colspan="3" rowspan="1" align="center">&nbsp;</td>
+			<td>&nbsp;</td>
+			<td colspan="4" rowspan="1" align="center" style="width: 33%;"><font class="simbolos">&#127777;</font><font class="pequena"> Temperatura</font></td>
+			<td colspan="4" rowspan="1" align="center" style="width: 33%;"><font class="simbolos">&#127778;</font><font class="pequena"> Humedad</font></td>
+			<td colspan="4" rowspan="1" align="center" style="width: 33%;"><font class="simbolos">&#9729;</font><font class="pequena"> Presi&oacute;n</font></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan="2" rowspan="1" align="center" style="width: 33%;"><font class="pequena">&#127777; Temperatura</font></td>
-			<td colspan="2" rowspan="1" align="center" style="width: 33%;"><font class="pequena">&#127778; Humedad</font></td>
-			<td colspan="2" rowspan="1" align="center" style="width: 33%;"><font class="pequena">&#9729; Presi&oacute;n</font></td>
+			<td>&nbsp;</td>
+			<td colspan="4" rowspan="1" align="center"><span id="tempVal" class="pequena"></span><span id="tempDec" class="mini"></span><font class="pequena">&#176;C</font></td>
+			<td colspan="4" rowspan="1" align="center"><span id="humeVal" class="pequena"></span><font class="pequena">%</font></td>
+			<td colspan="4" rowspan="1" align="center"><span id="presVal" class="pequena"></span><font class="pequena">hPa</font></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan="2" rowspan="1" align="center"><span id="tempVal"></span><font class="pequena">&#176;C</font></td>
-			<td colspan="2" rowspan="1" align="center"><span id="humeVal"></span><font class="pequena">%</font></td>
-			<td colspan="2" rowspan="1" align="center"><span id="presVal"></span><font class="pequena">hPa</font></td>
+			<td colspan="14" align="center"><font class="mini">Dpto. IT - Sensor ambiental - Uptime:</font><span class="mini" id="uptimeVal" class="mini"></span></td>
 		</tr>
 		<tr>
-			<td colspan="6" align="center"><font class="mini">Dpto. IT - Sensor ambiental - Uptime:</font><span class="mini" id="uptimeVal"></span></td>
+			<td colspan="14">&nbsp;</td>
 		</tr>
 	</tbody>
 </table>
