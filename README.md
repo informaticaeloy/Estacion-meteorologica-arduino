@@ -6,7 +6,7 @@ Estación metereológica hecha con Arduino, un sensor de temperatura, humedad, p
 
 ## Procedimiento
 
-* Realiza el montaje de la electrónica
+* Realiza el montaje de la electrónica (en desarrollo de documentación)
 
 * Flashea el .ino en tu Arduino, modificando el valor de la IP para que se compatible en tu red
 
